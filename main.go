@@ -53,8 +53,7 @@ func main() {
 		log.Fatalf("Failed to send message: %v", err)
 	}
 
-	// Print the response
-	if response != nil {
-		fmt.Printf("\n\nResponse: %+v\n", response)
+	if response.Data.Content != nil {
+		fmt.Println(*response.Data.Content)
 	}
 }
