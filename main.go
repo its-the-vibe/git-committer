@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/github/copilot-sdk/go"
+	copilot "github.com/github/copilot-sdk/go"
 )
 
 //go:embed .github/agents/git-committer.agent.md
@@ -16,7 +16,7 @@ var agentDescription string
 func main() {
 	// Create a new Copilot client
 	client := copilot.NewClient(nil)
-	
+
 	// Start the Copilot CLI server
 	if err := client.Start(); err != nil {
 		log.Fatalf("Failed to start Copilot client: %v", err)
@@ -53,10 +53,10 @@ func main() {
 			if event.Data.DeltaContent != nil && *event.Data.DeltaContent != "" {
 				fmt.Print(*event.Data.DeltaContent)
 			}
-		case "done":
-			// Signal completion
+		case "session.idle":
+			// Signal completion when session is idle
 			done <- true
-		case "error":
+		case "session.error":
 			// Print errors
 			if event.Data.Message != nil && *event.Data.Message != "" {
 				fmt.Fprintf(os.Stderr, "Error: %s\n", *event.Data.Message)
@@ -82,4 +82,3 @@ func main() {
 		fmt.Print(output.String())
 	}
 }
-
