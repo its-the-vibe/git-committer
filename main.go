@@ -23,12 +23,13 @@ func main() {
 	}
 	defer client.Stop()
 
-	// Parse the agent configuration from the embedded markdown
-	agentConfig := parseAgentConfig(agentDescription)
-	
-	// Create a session with the custom agent
+	// Create a session with system prompt and model configuration
 	session, err := client.CreateSession(&copilot.SessionConfig{
-		CustomAgents: []copilot.CustomAgentConfig{agentConfig},
+		Model: "gpt-4.1",
+		SystemMessage: &copilot.SystemMessageConfig{
+			Mode:    "append",
+			Content: agentDescription,
+		},
 	})
 	if err != nil {
 		log.Fatalf("Failed to create session: %v", err)
@@ -82,70 +83,3 @@ func main() {
 	}
 }
 
-// parseAgentConfig extracts configuration from the agent markdown file
-func parseAgentConfig(markdown string) copilot.CustomAgentConfig {
-	config := copilot.CustomAgentConfig{
-		Name:        "git-committer",
-		DisplayName: "Git Committer",
-		Description: "Expert at examining staged files and creating appropriate commit messages",
-	}
-
-	// Parse the markdown frontmatter and content
-	lines := strings.Split(markdown, "\n")
-	inFrontmatter := false
-	frontmatterEnd := 0
-	var tools []string
-	inToolsSection := false
-
-	for i, line := range lines {
-		trimmed := strings.TrimSpace(line)
-		
-		// Detect frontmatter
-		if trimmed == "---" {
-			if !inFrontmatter {
-				inFrontmatter = true
-			} else {
-				frontmatterEnd = i
-				break
-			}
-			continue
-		}
-
-		// Parse frontmatter fields
-		if inFrontmatter {
-			if strings.HasPrefix(trimmed, "name:") {
-				config.Name = strings.TrimSpace(strings.TrimPrefix(trimmed, "name:"))
-				inToolsSection = false
-			} else if strings.HasPrefix(trimmed, "description:") {
-				config.Description = strings.TrimSpace(strings.TrimPrefix(trimmed, "description:"))
-				inToolsSection = false
-			} else if strings.HasPrefix(trimmed, "tools:") {
-				inToolsSection = true
-			} else if strings.HasPrefix(trimmed, "- ") && inToolsSection {
-				// Parse tools list (handles both "- tool" and "  - tool")
-				tool := strings.TrimSpace(strings.TrimPrefix(trimmed, "- "))
-				tools = append(tools, tool)
-			} else if strings.HasPrefix(trimmed, "infer:") {
-				inferStr := strings.TrimSpace(strings.TrimPrefix(trimmed, "infer:"))
-				infer := inferStr == "true"
-				config.Infer = &infer
-				inToolsSection = false
-			} else if trimmed != "" && !strings.HasPrefix(trimmed, "- ") {
-				// Non-empty line that's not a list item - exit tools section
-				inToolsSection = false
-			}
-		}
-	}
-
-	// Set tools if found
-	if len(tools) > 0 {
-		config.Tools = tools
-	}
-
-	// Extract the prompt from the markdown content (everything after frontmatter)
-	if frontmatterEnd > 0 && frontmatterEnd < len(lines)-1 {
-		config.Prompt = strings.TrimSpace(strings.Join(lines[frontmatterEnd+1:], "\n"))
-	}
-
-	return config
-}
