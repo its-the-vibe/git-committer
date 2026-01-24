@@ -23,7 +23,8 @@ func main() {
 
 	// Create a session with system prompt and model configuration
 	session, err := client.CreateSession(&copilot.SessionConfig{
-		Model: "gpt-4.1",
+		Model:     "gpt-4.1",
+		Streaming: true,
 		SystemMessage: &copilot.SystemMessageConfig{
 			Mode:    "append",
 			Content: agentDescription,
@@ -41,19 +42,18 @@ func main() {
 			if event.Data.DeltaContent != nil && *event.Data.DeltaContent != "" {
 				fmt.Print(*event.Data.DeltaContent)
 			}
+			if event.Type == "session.idle" {
+				fmt.Println()
+			}
 		}
 	})
 
 	// Send the prompt to commit the currently staged files and wait for completion
 	prompt := "commit the currently staged files"
-	response, err := session.SendAndWait(copilot.MessageOptions{
+	_, err = session.SendAndWait(copilot.MessageOptions{
 		Prompt: prompt,
 	}, 0) // Use default 60s timeout
 	if err != nil {
 		log.Fatalf("Failed to send message: %v", err)
-	}
-
-	if response.Data.Content != nil {
-		fmt.Println(*response.Data.Content)
 	}
 }
