@@ -46,15 +46,13 @@ func main() {
 
 	// Send the prompt to commit the currently staged files and wait for completion
 	prompt := "commit the currently staged files"
-	response, err := session.SendAndWait(copilot.MessageOptions{
+	_, err = session.SendAndWait(copilot.MessageOptions{
 		Prompt: prompt,
 	}, 0) // Use default 60s timeout
 	if err != nil {
 		log.Fatalf("Failed to send message: %v", err)
 	}
 
-	// Print the response
-	if response != nil {
-		fmt.Printf("\n\nResponse: %+v\n", response)
-	}
+	// Output is already printed via the streaming event handler above
+	fmt.Println() // Add a final newline for clean output
 }
