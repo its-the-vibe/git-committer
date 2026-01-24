@@ -95,6 +95,7 @@ func parseAgentConfig(markdown string) copilot.CustomAgentConfig {
 	inFrontmatter := false
 	frontmatterEnd := 0
 	var tools []string
+	inToolsSection := false
 
 	for i, line := range lines {
 		trimmed := strings.TrimSpace(line)
@@ -114,9 +115,13 @@ func parseAgentConfig(markdown string) copilot.CustomAgentConfig {
 		if inFrontmatter {
 			if strings.HasPrefix(trimmed, "name:") {
 				config.Name = strings.TrimSpace(strings.TrimPrefix(trimmed, "name:"))
+				inToolsSection = false
 			} else if strings.HasPrefix(trimmed, "description:") {
 				config.Description = strings.TrimSpace(strings.TrimPrefix(trimmed, "description:"))
-			} else if strings.HasPrefix(trimmed, "- ") && len(tools) >= 0 {
+				inToolsSection = false
+			} else if strings.HasPrefix(trimmed, "tools:") {
+				inToolsSection = true
+			} else if strings.HasPrefix(trimmed, "- ") && inToolsSection {
 				// Parse tools list
 				tool := strings.TrimSpace(strings.TrimPrefix(trimmed, "- "))
 				tools = append(tools, tool)
@@ -124,6 +129,7 @@ func parseAgentConfig(markdown string) copilot.CustomAgentConfig {
 				inferStr := strings.TrimSpace(strings.TrimPrefix(trimmed, "infer:"))
 				infer := inferStr == "true"
 				config.Infer = &infer
+				inToolsSection = false
 			}
 		}
 	}
