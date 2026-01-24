@@ -4,8 +4,6 @@ import (
 	_ "embed"
 	"fmt"
 	"log"
-	"os"
-	"strings"
 
 	copilot "github.com/github/copilot-sdk/go"
 )
@@ -35,50 +33,23 @@ func main() {
 		log.Fatalf("Failed to create session: %v", err)
 	}
 
-	// Track completion
-	done := make(chan bool)
-	var output strings.Builder
-
-	// Subscribe to session events
+	// Subscribe to session events to display streaming output
 	session.On(func(event copilot.SessionEvent) {
 		switch event.Type {
-		case "assistant.message":
-			// Print assistant messages
-			if event.Data.Content != nil && *event.Data.Content != "" {
-				output.WriteString(*event.Data.Content)
-				output.WriteString("\n")
-			}
 		case "assistant.message_delta":
 			// Print message deltas if streaming is enabled
 			if event.Data.DeltaContent != nil && *event.Data.DeltaContent != "" {
 				fmt.Print(*event.Data.DeltaContent)
 			}
-		case "session.idle":
-			// Signal completion when session is idle
-			done <- true
-		case "session.error":
-			// Print errors
-			if event.Data.Message != nil && *event.Data.Message != "" {
-				fmt.Fprintf(os.Stderr, "Error: %s\n", *event.Data.Message)
-			}
-			done <- true
 		}
 	})
 
-	// Send the prompt to commit the currently staged files
+	// Send the prompt to commit the currently staged files and wait for completion
 	prompt := "commit the currently staged files"
-	_, err = session.Send(copilot.MessageOptions{
+	_, err = session.SendAndWait(copilot.MessageOptions{
 		Prompt: prompt,
-	})
+	}, 0) // Use default 60s timeout
 	if err != nil {
 		log.Fatalf("Failed to send message: %v", err)
-	}
-
-	// Wait for completion
-	<-done
-
-	// Print final output if not streaming
-	if output.Len() > 0 {
-		fmt.Print(output.String())
 	}
 }

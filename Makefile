@@ -10,7 +10,7 @@ test:
 
 # Clean build artifacts
 clean:
-	rm -f cpcommit
+	rm -f git-committer
 
 # Install to GOPATH/bin
 install:
