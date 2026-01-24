@@ -10,6 +10,7 @@
 
 # Project binary
 git-committer
+cpcommit
 
 # Test binary, built with `go test -c`
 *.test

@@ -2,7 +2,7 @@
 
 # Build the binary
 build:
-	go build -o git-committer
+	go build
 
 # Run tests
 test:
@@ -10,7 +10,7 @@ test:
 
 # Clean build artifacts
 clean:
-	rm -f git-committer
+	rm -f cpcommit
 
 # Install to GOPATH/bin
 install:

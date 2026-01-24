@@ -1,4 +1,4 @@
-module github.com/its-the-vibe/git-committer
+module github.com/its-the-vibe/cpcommit
 
 go 1.25.5
 
