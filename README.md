@@ -18,7 +18,7 @@ make build
 
 Or using Go directly:
 ```bash
-go build -o git-committer
+go build -o cpcommit
 ```
 
 ### Install to PATH
@@ -35,9 +35,9 @@ make install
    git add <files>
    ```
 
-2. Run the git-committer agent:
+2. Run the cpcommit agent:
    ```bash
-   ./git-committer
+   ./cpcommit
    ```
 
 The agent will:
