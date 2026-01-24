@@ -82,6 +82,7 @@ docs: update API usage examples in README
 ## Boundaries
 
 - Only commit files that are currently staged (use `git diff --staged` to verify)
+- Do not add or stage files; only work with what is already staged
 - Never commit files from `.env`, `secrets/`, or other sensitive directories
 - Never commit with an empty or generic message like "update" or "fix"
 - If there are no staged changes, inform the user and do not create a commit
