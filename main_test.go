@@ -58,3 +58,68 @@ When invoked, you should commit the staged files.
 		t.Errorf("Expected prompt to contain content from markdown, got length %d", len(config.Prompt))
 	}
 }
+
+func TestParseAgentConfigWithNonIndentedTools(t *testing.T) {
+	markdown := `---
+name: test-agent
+description: Test agent
+tools:
+- bash
+- view
+infer: true
+---
+
+Test prompt content.
+`
+
+	config := parseAgentConfig(markdown)
+
+	if config.Name != "test-agent" {
+		t.Errorf("Expected name 'test-agent', got '%s'", config.Name)
+	}
+
+	if len(config.Tools) != 2 {
+		t.Errorf("Expected 2 tools, got %d", len(config.Tools))
+	}
+
+	expectedTools := []string{"bash", "view"}
+	for i, tool := range expectedTools {
+		if i >= len(config.Tools) || config.Tools[i] != tool {
+			t.Errorf("Expected tool[%d] to be '%s', got '%s'", i, tool, config.Tools[i])
+		}
+	}
+
+	if config.Infer == nil || *config.Infer != true {
+		t.Errorf("Expected infer to be true")
+	}
+}
+
+func TestParseAgentConfigStopsToolsOnNewField(t *testing.T) {
+	// This tests that the parser correctly stops parsing tools when encountering a new field
+	markdown := `---
+name: test-agent
+tools:
+- bash
+description: This should not be parsed as a tool
+- view
+infer: false
+---
+
+Test prompt.
+`
+
+	config := parseAgentConfig(markdown)
+
+	// Should only have "bash" as a tool, not "view" since it comes after description
+	if len(config.Tools) != 1 {
+		t.Errorf("Expected 1 tool, got %d: %v", len(config.Tools), config.Tools)
+	}
+
+	if len(config.Tools) > 0 && config.Tools[0] != "bash" {
+		t.Errorf("Expected first tool to be 'bash', got '%s'", config.Tools[0])
+	}
+
+	if config.Description != "This should not be parsed as a tool" {
+		t.Errorf("Expected description to match, got '%s'", config.Description)
+	}
+}

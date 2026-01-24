@@ -122,13 +122,16 @@ func parseAgentConfig(markdown string) copilot.CustomAgentConfig {
 			} else if strings.HasPrefix(trimmed, "tools:") {
 				inToolsSection = true
 			} else if strings.HasPrefix(trimmed, "- ") && inToolsSection {
-				// Parse tools list
+				// Parse tools list (handles both "- tool" and "  - tool")
 				tool := strings.TrimSpace(strings.TrimPrefix(trimmed, "- "))
 				tools = append(tools, tool)
 			} else if strings.HasPrefix(trimmed, "infer:") {
 				inferStr := strings.TrimSpace(strings.TrimPrefix(trimmed, "infer:"))
 				infer := inferStr == "true"
 				config.Infer = &infer
+				inToolsSection = false
+			} else if trimmed != "" && !strings.HasPrefix(trimmed, "- ") {
+				// Non-empty line that's not a list item - exit tools section
 				inToolsSection = false
 			}
 		}
