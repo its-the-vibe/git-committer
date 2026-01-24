@@ -1,0 +1,25 @@
+.PHONY: build test clean install
+
+# Build the binary
+build:
+	go build -o git-committer
+
+# Run tests
+test:
+	go test -v ./...
+
+# Clean build artifacts
+clean:
+	rm -f git-committer
+
+# Install to GOPATH/bin
+install:
+	go install
+
+# Run go mod tidy
+tidy:
+	go mod tidy
+
+# Format code
+fmt:
+	go fmt ./...
