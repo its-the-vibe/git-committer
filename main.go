@@ -38,7 +38,6 @@ func main() {
 	}
 	defer session.Destroy()
 
-	done := make(chan bool)
 	// Subscribe to session events to display streaming output
 	session.On(func(event copilot.SessionEvent) {
 		switch event.Type {
@@ -49,17 +48,15 @@ func main() {
 			}
 		case "session.idle":
 			fmt.Println()
-			close(done)
 		}
 	})
 
 	// Send the prompt to commit the currently staged files and wait for completion
 	prompt := "commit the currently staged files"
-	_, err = session.Send(ctx, copilot.MessageOptions{
+	_, err = session.SendAndWait(ctx, copilot.MessageOptions{
 		Prompt: prompt,
 	})
 	if err != nil {
 		log.Fatalf("Failed to send message: %v", err)
 	}
-	<-done
 }
