@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	_ "embed"
 	"fmt"
 	"log"
@@ -15,14 +16,16 @@ func main() {
 	// Create a new Copilot client
 	client := copilot.NewClient(nil)
 
+	ctx := context.Background()
+
 	// Start the Copilot CLI server
-	if err := client.Start(); err != nil {
+	if err := client.Start(ctx); err != nil {
 		log.Fatalf("Failed to start Copilot client: %v", err)
 	}
 	defer client.Stop()
 
 	// Create a session with system prompt and model configuration
-	session, err := client.CreateSession(&copilot.SessionConfig{
+	session, err := client.CreateSession(ctx, &copilot.SessionConfig{
 		Model:     "gpt-4.1",
 		Streaming: true,
 		SystemMessage: &copilot.SystemMessageConfig{
@@ -33,7 +36,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to create session: %v", err)
 	}
+	defer session.Destroy()
 
+	done := make(chan bool)
 	// Subscribe to session events to display streaming output
 	session.On(func(event copilot.SessionEvent) {
 		switch event.Type {
@@ -42,18 +47,19 @@ func main() {
 			if event.Data.DeltaContent != nil && *event.Data.DeltaContent != "" {
 				fmt.Print(*event.Data.DeltaContent)
 			}
-			if event.Type == "session.idle" {
-				fmt.Println()
-			}
+		case "session.idle":
+			fmt.Println()
+			close(done)
 		}
 	})
 
 	// Send the prompt to commit the currently staged files and wait for completion
 	prompt := "commit the currently staged files"
-	_, err = session.SendAndWait(copilot.MessageOptions{
+	_, err = session.Send(ctx, copilot.MessageOptions{
 		Prompt: prompt,
-	}, 0) // Use default 60s timeout
+	})
 	if err != nil {
 		log.Fatalf("Failed to send message: %v", err)
 	}
+	<-done
 }
