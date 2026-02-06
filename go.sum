@@ -1,5 +1,5 @@
-github.com/github/copilot-sdk/go v0.1.20 h1:r2+Nzr0DS7abF4499PAjsbdc9170OUEeZkic7sUR7BU=
-github.com/github/copilot-sdk/go v0.1.20/go.mod h1:0SYT+64k347IDT0Trn4JHVFlUhPtGSE6ab479tU/+tY=
+github.com/github/copilot-sdk/go v0.1.22 h1:YH3rGQarc05o3oIhg+8MsGDKkmhhpSY40EAp1LrrAKI=
+github.com/github/copilot-sdk/go v0.1.22/go.mod h1:GdwwBfMbm9AABLEM3x5IZKw4ZfwCYxZ1BgyytmZenQ0=
 github.com/google/go-cmp v0.7.0 h1:wk8382ETsv4JYUZwIsn6YpYiWiBsYLSJiTsyBybVuN8=
 github.com/google/go-cmp v0.7.0/go.mod h1:pXiqmnSA92OHEEa9HXL2W4E7lf9JzCmGVUdgjX3N/iU=
 github.com/google/jsonschema-go v0.4.2 h1:tmrUohrwoLZZS/P3x7ex0WAVknEkBZM46iALbcqoRA8=

@@ -4,6 +4,6 @@ go 1.25
 
 toolchain go1.25.5
 
-require github.com/github/copilot-sdk/go v0.1.20
+require github.com/github/copilot-sdk/go v0.1.22
 
 require github.com/google/jsonschema-go v0.4.2 // indirect
