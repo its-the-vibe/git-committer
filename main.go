@@ -33,6 +33,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to create session: %v", err)
 	}
+	defer session.Destroy()
 
 	// Subscribe to session events to display streaming output
 	session.On(func(event copilot.SessionEvent) {
@@ -42,9 +43,8 @@ func main() {
 			if event.Data.DeltaContent != nil && *event.Data.DeltaContent != "" {
 				fmt.Print(*event.Data.DeltaContent)
 			}
-			if event.Type == "session.idle" {
-				fmt.Println()
-			}
+		case "session.idle":
+			fmt.Println()
 		}
 	})
 
