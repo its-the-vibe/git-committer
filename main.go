@@ -29,7 +29,7 @@ func main() {
 		Model:     "gpt-4.1",
 		Streaming: true,
 		SystemMessage: &copilot.SystemMessageConfig{
-			Mode:    "append",
+			Mode:    "replace",
 			Content: agentDescription,
 		},
 	})
