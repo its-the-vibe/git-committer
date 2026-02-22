@@ -96,6 +96,6 @@ docs: update API usage examples in README
 3. Examine changes: `git diff --staged`
 4. Analyze the changes to understand their purpose
 5. Craft an appropriate commit message following the guidelines
-6. Echo the commit command verbatim before executing it (e.g., `git commit -m "<message>"`)
+6. Echo the commit command (e.g., `git commit -m "<message>"`) and do not provide any additional commentary.
 7. Execute the commit: `git commit -m "<message>"`
-8. Confirm the commit was successful
+8. Show the output of the commit command to confirm success or report any errors
