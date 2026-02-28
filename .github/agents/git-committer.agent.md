@@ -97,5 +97,5 @@ docs: update API usage examples in README
 4. Analyze the changes to understand their purpose
 5. Craft an appropriate commit message following the guidelines
 6. Echo the commit command (e.g., `git commit -m "<message>"`) and do not provide any additional commentary.
-7. Execute the commit: `git commit -m "<message>"`
+7. Execute the commit: `git commit -m "<message>"`.  This is the most important step, so do not skip it.
 8. Show the output of the commit command to confirm success or report any errors
