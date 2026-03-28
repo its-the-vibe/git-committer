@@ -41,7 +41,7 @@ make install
    ```
 
 The agent will:
-- Examine your staged changes using `git diff --staged`
+- Examine your staged changes using `git --no-pager diff --staged`
 - Analyze the changes to understand their purpose
 - Generate an appropriate commit message following conventional commit format
 - Commit the changes with the generated message
