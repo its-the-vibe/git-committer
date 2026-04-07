@@ -49,6 +49,11 @@ func main() {
 			}
 		case "session.idle":
 			fmt.Println()
+		case "elicitation.requested":
+			fmt.Println("elicitation.requested")
+			if event.Data.Content != nil && *event.Data.Content != "" {
+				fmt.Println(*event.Data.Content)
+			}
 		}
 	})
 
