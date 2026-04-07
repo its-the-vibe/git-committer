@@ -37,7 +37,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to create session: %v", err)
 	}
-	defer session.Destroy()
+	defer session.Disconnect()
 
 	// Subscribe to session events to display streaming output
 	session.On(func(event copilot.SessionEvent) {
