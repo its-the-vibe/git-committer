@@ -14,7 +14,9 @@ var agentDescription string
 
 func main() {
 	// Create a new Copilot client
-	client := copilot.NewClient(nil)
+	client := copilot.NewClient(&copilot.ClientOptions{
+		LogLevel: "debug",
+	})
 
 	ctx := context.Background()
 
