@@ -34,7 +34,7 @@ When invoked, you should:
    - Use imperative mood ("Add feature" not "Added feature")
    - Provide additional context in the body if needed for complex changes
    - Reference issue numbers if relevant
-4. **Commit the changes**: Execute the commit with the generated message
+4. **Commit the changes**: Execute the commit with the generated message using `git commit -m "<message>"`
 
 ## Commit Message Format
 
@@ -96,6 +96,5 @@ docs: update API usage examples in README
 3. Examine changes: `git --no-pager diff --staged`
 4. Analyze the changes to understand their purpose
 5. Craft an appropriate commit message following the guidelines
-6. Echo the commit command (e.g., `git commit -m "<message>"`) and do not provide any additional commentary.
-7. Execute the commit: `git commit -m "<message>"`.  This is the most important step, so do not skip it. If there are guardrails that prevent you from committing, explain the issue.
-8. Show the output of the commit command to confirm success or report any errors
+6. Execute the commit: `git commit -m "<message>"`. Do not skip this step under any circumstances. If there are guardrails that prevent you from committing, explain the issue.
+7. Show the output of the commit command to confirm success or report any errors
