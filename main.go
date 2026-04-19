@@ -42,22 +42,24 @@ func main() {
 	defer session.Disconnect()
 
 	// Subscribe to session events to display streaming output
-	session.On(func(event copilot.SessionEvent) {
-		switch event.Type {
-		case "assistant.message_delta":
+	unsubscribe := session.On(func(event copilot.SessionEvent) {
+		switch d := event.Data.(type) {
+		case *copilot.AssistantMessageDeltaData:
 			// Print message deltas if streaming is enabled
-			if event.Data.DeltaContent != nil && *event.Data.DeltaContent != "" {
-				fmt.Print(*event.Data.DeltaContent)
+			if d.DeltaContent != "" {
+				fmt.Print(d.DeltaContent)
 			}
-		case "session.idle":
+		case *copilot.SessionIdleData:
 			fmt.Println()
-		case "elicitation.requested":
+		case *copilot.ElicitationRequestedData:
 			fmt.Println("elicitation.requested")
-			if event.Data.Content != nil && *event.Data.Content != "" {
-				fmt.Println(*event.Data.Content)
+			if d.Message != "" {
+				fmt.Println(d.Message)
 			}
 		}
 	})
+
+	defer unsubscribe()
 
 	// Send the prompt to commit the currently staged files and wait for completion
 	prompt := "commit the currently staged files"

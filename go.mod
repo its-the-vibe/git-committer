@@ -2,7 +2,7 @@ module github.com/its-the-vibe/cpcommit
 
 go 1.26.2
 
-require github.com/github/copilot-sdk/go v0.2.1
+require github.com/github/copilot-sdk/go v0.2.2
 
 require (
 	github.com/go-logr/logr v1.4.3 // indirect
