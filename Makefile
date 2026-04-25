@@ -1,4 +1,4 @@
-.PHONY: build test clean install
+.PHONY: build test clean install lint
 
 # Build the binary
 build:
@@ -23,3 +23,7 @@ tidy:
 # Format code
 fmt:
 	go fmt ./...
+
+# Lint code
+lint: fmt
+	go vet ./...
