@@ -1,5 +1,7 @@
 # git-committer
 
+<img src="https://github.com/its-the-vibe/git-committer/actions/workflows/ci.yaml/badge.svg" alt="CI Status">
+
 A standalone CLI Copilot agent that examines staged files and creates appropriate commit messages following best practices.
 
 ## Prerequisites
