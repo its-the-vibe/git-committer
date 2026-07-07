@@ -1,6 +1,6 @@
 module github.com/its-the-vibe/cpcommit
 
-go 1.26.4
+go 1.26.5
 
 require github.com/github/copilot-sdk/go v0.3.0
 
