@@ -26,10 +26,11 @@ func main() {
 	}
 	defer client.Stop()
 
+	streaming := true
 	// Create a session with system prompt and model configuration
 	session, err := client.CreateSession(ctx, &copilot.SessionConfig{
-		Model:     "gpt-4.1",
-		Streaming: true,
+		Model:     "auto",
+		Streaming: &streaming,
 		SystemMessage: &copilot.SystemMessageConfig{
 			Mode:    "replace",
 			Content: agentDescription,
