@@ -2,7 +2,7 @@ module github.com/its-the-vibe/cpcommit
 
 go 1.27.3
 
-require github.com/github/copilot-sdk/go v1.0.25
+require github.com/github/copilot-sdk/go v1.0.26
 
 require (
 	github.com/coder/websocket v1.8.15 // indirect
