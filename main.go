@@ -16,6 +16,9 @@ func main() {
 	// Create a new Copilot client
 	client := copilot.NewClient(&copilot.ClientOptions{
 		LogLevel: "debug",
+		Connection: copilot.StdioConnection{
+			Path: "copilot",
+		},
 	})
 
 	ctx := context.Background()
@@ -29,7 +32,7 @@ func main() {
 	streaming := true
 	// Create a session with system prompt and model configuration
 	session, err := client.CreateSession(ctx, &copilot.SessionConfig{
-		Model:     "auto",
+		Model:     "gpt-6-luna",
 		Streaming: &streaming,
 		SystemMessage: &copilot.SystemMessageConfig{
 			Mode:    "replace",
