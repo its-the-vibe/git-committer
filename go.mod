@@ -2,7 +2,7 @@ module github.com/its-the-vibe/cpcommit
 
 go 1.27.4
 
-require github.com/github/copilot-sdk/go v1.0.32
+require github.com/github/copilot-sdk/go v1.0.34
 
 require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
