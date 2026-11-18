@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	copilot "github.com/github/copilot-sdk/go"
+	copilot "github.com/microsoft/copilot-sdk/go/v2"
 )
 
 //go:embed .github/agents/git-committer.agent.md
@@ -15,8 +15,11 @@ var agentDescription string
 func main() {
 	// Create a new Copilot client
 	client := copilot.NewClient(&copilot.ClientOptions{
-		LogLevel: "debug",
-		Connection: copilot.StdioConnection{
+		Mode: copilot.ModeCodingAgent,
+		Observability: copilot.ClientObservabilityOptions{
+			LogLevel: "debug",
+		},
+		Runtime: copilot.SpawnedStdioConnection{
 			Path: "copilot",
 		},
 	})
@@ -31,14 +34,18 @@ func main() {
 
 	streaming := true
 	// Create a session with system prompt and model configuration
-	session, err := client.CreateSession(ctx, &copilot.SessionConfig{
-		Model:     "gpt-6-luna",
-		Streaming: &streaming,
+	session, err := client.CreateSession(ctx, &copilot.CreateSessionOptions{
+		Model: "gpt-6-luna",
+		Events: copilot.SessionEventOptions{
+			Streaming: &streaming,
+		},
 		SystemMessage: &copilot.SystemMessageConfig{
 			Mode:    "replace",
 			Content: agentDescription,
 		},
-		OnPermissionRequest: copilot.PermissionHandler.ApproveAll,
+		Permissions: copilot.SessionPermissionOptions{
+			OnRequest: copilot.PermissionHandler.ApproveAll,
+		},
 	})
 	if err != nil {
 		log.Fatalf("Failed to create session: %v", err)
