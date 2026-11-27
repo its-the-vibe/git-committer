@@ -2,12 +2,13 @@ module github.com/its-the-vibe/cpcommit
 
 go 1.27.4
 
-require github.com/microsoft/copilot-sdk/go/v2 v2.0.1
+require github.com/microsoft/copilot-sdk/go/v2 v2.0.4
 
 require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/coder/websocket v1.8.15 // indirect
 	github.com/ebitengine/purego v0.11.3 // indirect
+	github.com/go-json-experiment/json v1.27.2 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/google/jsonschema-go v0.4.3 // indirect
